@@ -129,6 +129,18 @@ QString AppSettings::missionSavePath(void)
     return QString();
 }
 
+int AppSettings::nbFile(void)
+{
+    QString path = savePath()->rawValue().toString();
+    if (!path.isEmpty() && QDir(path).exists()) {
+        QDir dir(path);
+        QStringList totalfiles;
+        totalfiles = dir.entryList(QStringList("*"), QDir::Files | QDir::NoSymLinks);
+        return totalfiles.count();
+    }
+    return -1;
+}
+
 QString AppSettings::parameterSavePath(void)
 {
     QString path = savePath()->rawValue().toString();

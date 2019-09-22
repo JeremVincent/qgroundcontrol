@@ -229,6 +229,7 @@ QGCView {
             fileDialog.nameFilters =    masterController.loadNameFilters
             fileDialog.fileExtension =  _appSettings.planFileExtension
             fileDialog.fileExtension2 = _appSettings.missionFileExtension
+            console.log("nb is ", fileDialog.nb);
             fileDialog.openForLoad()
         }
 
@@ -317,8 +318,9 @@ QGCView {
         qgcView:        _qgcView
         folder:         _appSettings.missionSavePath
 
-        property bool planFiles: true    ///< true: working with plan files, false: working with kml file
 
+        property bool planFiles: true    ///< true: working with plan files, false: working with kml file
+        property int nb: _appSettings.nbFile
         onAcceptedForSave: {
             if (planFiles) {
                 masterController.saveToFile(file)
