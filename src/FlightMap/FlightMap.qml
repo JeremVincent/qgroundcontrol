@@ -149,4 +149,11 @@ Map {
             }
         }
     }
+
+    MapCircle {
+        center: gcsPosition
+        radius: 5000.0
+        color: 'green'
+        border.width: 3
+    }
 } // Map
