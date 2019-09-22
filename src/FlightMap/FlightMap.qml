@@ -152,8 +152,8 @@ Map {
 
     MapCircle {
         center: gcsPosition
-        radius: 5000.0
-        color: 'green'
+        radius: 1000
+        border.color: 'orange'
         border.width: 3
     }
 } // Map
