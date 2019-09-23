@@ -55,7 +55,7 @@ public:
     Q_PROPERTY(QString logSavePath          READ logSavePath        NOTIFY savePathsChanged)
     Q_PROPERTY(QString videoSavePath        READ videoSavePath      NOTIFY savePathsChanged)
     Q_PROPERTY(QString crashSavePath        READ crashSavePath      NOTIFY savePathsChanged)
-    Q_PROPERTY(QString nbFile               READ nbFile             NOTIFY savePathsChanged)
+    //Q_PROPERTY(QString nbFile               READ nbFile             NOTIFY savePathsChanged)
 
     Q_PROPERTY(QString planFileExtension        MEMBER planFileExtension        CONSTANT)
     Q_PROPERTY(QString missionFileExtension     MEMBER missionFileExtension     CONSTANT)
@@ -72,7 +72,7 @@ public:
     QString logSavePath         ();
     QString videoSavePath       ();
     QString crashSavePath       ();
-    int     nbFile              ();
+    //int     nbFile              ();
 
     static MAV_AUTOPILOT    offlineEditingFirmwareTypeFromFirmwareType  (MAV_AUTOPILOT firmwareType);
     static MAV_TYPE         offlineEditingVehicleTypeFromVehicleType    (MAV_TYPE vehicleType);

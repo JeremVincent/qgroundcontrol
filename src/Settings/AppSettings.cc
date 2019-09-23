@@ -14,6 +14,7 @@
 #include <QQmlEngine>
 #include <QtQml>
 #include <QStandardPaths>
+#include <QDebug>
 
 const char* AppSettings::parameterFileExtension =   "params";
 const char* AppSettings::planFileExtension =        "plan";
@@ -32,6 +33,8 @@ const char* AppSettings::missionDirectory =         "Missions";
 const char* AppSettings::logDirectory =             "Logs";
 const char* AppSettings::videoDirectory =           "Video";
 const char* AppSettings::crashDirectory =           "CrashLogs";
+
+static QString username = "blabla";
 
 DECLARE_SETTINGGROUP(App, "")
 {
@@ -99,8 +102,9 @@ DECLARE_SETTINGSFACT_NO_FUNC(AppSettings, indoorPalette)
 
 void AppSettings::_checkSavePathDirectories(void)
 {
-    QDir savePathDir(savePath()->rawValue().toString());
+    QDir savePathDir(savePath()->rawValue().toString() + "/" + username);
     if (!savePathDir.exists()) {
+        qDebug() << savePathDir.absolutePath();
         QDir().mkpath(savePathDir.absolutePath());
     }
     if (savePathDir.exists()) {
@@ -122,23 +126,15 @@ void AppSettings::_indoorPaletteChanged(void)
 QString AppSettings::missionSavePath(void)
 {
     QString path = savePath()->rawValue().toString();
-    if (!path.isEmpty() && QDir(path).exists()) {
-        QDir dir(path);
-        return dir.filePath(missionDirectory);
-    }
-    return QString();
-}
-
-int AppSettings::nbFile(void)
-{
-    QString path = savePath()->rawValue().toString();
-    if (!path.isEmpty() && QDir(path).exists()) {
+    if (!path.isEmpty() && QDir(path).exists() && QDir(path).count() > 0) {
         QDir dir(path);
         QStringList totalfiles;
         totalfiles = dir.entryList(QStringList("*"), QDir::Files | QDir::NoSymLinks);
-        return totalfiles.count();
+        qDebug() << "foo " << totalfiles.count();
+        qDebug() << "list" << totalfiles.toStdList();
+        return dir.filePath(missionDirectory);
     }
-    return -1;
+    return QString();
 }
 
 QString AppSettings::parameterSavePath(void)
