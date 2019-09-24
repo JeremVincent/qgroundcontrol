@@ -33,11 +33,14 @@ const char* AppSettings::missionDirectory =         "Missions";
 const char* AppSettings::logDirectory =             "Logs";
 const char* AppSettings::videoDirectory =           "Video";
 const char* AppSettings::crashDirectory =           "CrashLogs";
+QString AppSettings::path;
 
-static QString username = "blabla";
+static QString username = "user";
+static int foo = 2;
 
 DECLARE_SETTINGGROUP(App, "")
 {
+    path = savePath()->rawValue().toString() + + "/" + username;
     QQmlEngine::setObjectOwnership(this, QQmlEngine::CppOwnership);
     qmlRegisterUncreatableType<AppSettings>("QGroundControl.SettingsManager", 1, 0, "AppSettings", "Reference only");
     QGCPalette::setGlobalTheme(indoorPalette()->rawValue().toBool() ? QGCPalette::Dark : QGCPalette::Light);
@@ -102,7 +105,8 @@ DECLARE_SETTINGSFACT_NO_FUNC(AppSettings, indoorPalette)
 
 void AppSettings::_checkSavePathDirectories(void)
 {
-    QDir savePathDir(savePath()->rawValue().toString() + "/" + username);
+    //QDir savePathDir(savePath()->rawValue().toString() + "/" + username);
+    QDir savePathDir(path);
     if (!savePathDir.exists()) {
         qDebug() << savePathDir.absolutePath();
         QDir().mkpath(savePathDir.absolutePath());
@@ -125,13 +129,9 @@ void AppSettings::_indoorPaletteChanged(void)
 
 QString AppSettings::missionSavePath(void)
 {
-    QString path = savePath()->rawValue().toString();
+    //QString path = savePath()->rawValue().toString();
     if (!path.isEmpty() && QDir(path).exists() && QDir(path).count() > 0) {
         QDir dir(path);
-        QStringList totalfiles;
-        totalfiles = dir.entryList(QStringList("*"), QDir::Files | QDir::NoSymLinks);
-        qDebug() << "foo " << totalfiles.count();
-        qDebug() << "list" << totalfiles.toStdList();
         return dir.filePath(missionDirectory);
     }
     return QString();
@@ -139,7 +139,7 @@ QString AppSettings::missionSavePath(void)
 
 QString AppSettings::parameterSavePath(void)
 {
-    QString path = savePath()->rawValue().toString();
+    //QString path = savePath()->rawValue().toString();
     if (!path.isEmpty() && QDir(path).exists()) {
         QDir dir(path);
         return dir.filePath(parameterDirectory);
@@ -149,7 +149,7 @@ QString AppSettings::parameterSavePath(void)
 
 QString AppSettings::telemetrySavePath(void)
 {
-    QString path = savePath()->rawValue().toString();
+    //QString path = savePath()->rawValue().toString();
     if (!path.isEmpty() && QDir(path).exists()) {
         QDir dir(path);
         return dir.filePath(telemetryDirectory);
@@ -159,7 +159,7 @@ QString AppSettings::telemetrySavePath(void)
 
 QString AppSettings::logSavePath(void)
 {
-    QString path = savePath()->rawValue().toString();
+    //QString path = savePath()->rawValue().toString();
     if (!path.isEmpty() && QDir(path).exists()) {
         QDir dir(path);
         return dir.filePath(logDirectory);
@@ -169,7 +169,7 @@ QString AppSettings::logSavePath(void)
 
 QString AppSettings::videoSavePath(void)
 {
-    QString path = savePath()->rawValue().toString();
+    //QString path = savePath()->rawValue().toString();
     if (!path.isEmpty() && QDir(path).exists()) {
         QDir dir(path);
         return dir.filePath(videoDirectory);
@@ -179,12 +179,20 @@ QString AppSettings::videoSavePath(void)
 
 QString AppSettings::crashSavePath(void)
 {
-    QString path = savePath()->rawValue().toString();
+    //QString path = savePath()->rawValue().toString();
     if (!path.isEmpty() && QDir(path).exists()) {
         QDir dir(path);
         return dir.filePath(crashDirectory);
     }
     return QString();
+}
+
+int AppSettings::nbFile(void){
+    QDir dir_count(path + "/" + missionDirectory);
+    QStringList totalfiles;
+    totalfiles = dir_count.entryList(QStringList("*.plan, .kml"), QDir::Files | QDir::NoSymLinks);
+    qDebug() << "foo " << totalfiles.count() << dir_count.absolutePath();
+    return totalfiles.count();
 }
 
 MAV_AUTOPILOT AppSettings::offlineEditingFirmwareTypeFromFirmwareType(MAV_AUTOPILOT firmwareType)

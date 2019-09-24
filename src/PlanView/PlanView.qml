@@ -133,7 +133,7 @@ QGCView {
 
         onRawValueChanged: {
             if (_visualItems.count > 1) {
-                _qgcView.showDialog(applyNewAltitude, qsTr("Apply new alititude"), showDialogDefaultWidth, StandardButton.Yes | StandardButton.No)
+                _qgcView.showDialog(applyNewAltitude, qsTr("Apply new altitude"), showDialogDefaultWidth, StandardButton.Yes | StandardButton.No)
             }
         }
     }
@@ -1082,8 +1082,13 @@ QGCView {
                     Layout.fillWidth:   true
                     enabled:            !masterController.syncInProgress && _visualItems.count > 1
                     onClicked: {
-                        dropPanel.hide()
-                        masterController.saveToSelectedFile()
+                        if(_appSettings.nbFile < 10) {
+                            dropPanel.hide()
+                            masterController.saveToSelectedFile()
+                        }
+                        else {
+                            messageDialog_toomuch.open()
+                        }
                     }
                 }
 
@@ -1092,13 +1097,18 @@ QGCView {
                     Layout.columnSpan:  2
                     enabled:            !masterController.syncInProgress && _visualItems.count > 1
                     onClicked: {
-                        // First point does not count
-                        if (_visualItems.count < 2) {
-                            _qgcView.showDialog(noItemForKML, qsTr("KML"), _qgcView.showDialogDefaultWidth, StandardButton.Cancel)
-                            return
+                        if (_appSettings.nbFile < 10){
+                            // First point does not count
+                            if (_visualItems.count < 2) {
+                                _qgcView.showDialog(noItemForKML, qsTr("KML"), _qgcView.showDialogDefaultWidth, StandardButton.Cancel)
+                                return
+                            }
+                            dropPanel.hide()
+                            masterController.saveKmlToSelectedFile()
                         }
-                        dropPanel.hide()
-                        masterController.saveKmlToSelectedFile()
+                        else {
+                            messageDialog_toomuch.open()
+                        }
                     }
                 }
 
@@ -1152,5 +1162,10 @@ QGCView {
 
             }
         }
+    }
+    MessageDialog {
+        id: messageDialog_toomuch
+        title: "Warning"
+        text: "Limite de 10 missions enregistrées atteintes."
     }
 } // QGCVIew

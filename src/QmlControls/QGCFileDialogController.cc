@@ -19,6 +19,7 @@ QGC_LOGGING_CATEGORY(QGCFileDialogControllerLog, "QGCFileDialogControllerLog")
 QStringList QGCFileDialogController::getFiles(const QString& directoryPath, const QStringList& fileExtensions)
 {
     qCDebug(QGCFileDialogControllerLog) << "getFiles" << directoryPath << fileExtensions;
+    qDebug() << "getFile" ;
     QStringList files;
 
     QDir fileDir(directoryPath);
