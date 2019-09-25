@@ -91,7 +91,7 @@ private:
     QGCPositionManager*         _qgcPositionManager     = nullptr;
     VideoManager*               _videoManager           = nullptr;
     MAVLinkLogManager*          _mavlinkLogManager      = nullptr;
-    Login*                      _login                  = nullptr;
+//    Login*                      _login                  = nullptr;
     QGCCorePlugin*              _corePlugin             = nullptr;
     SettingsManager*            _settingsManager        = nullptr;
     AirspaceManager*            _airspaceManager        = nullptr;

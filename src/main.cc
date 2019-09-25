@@ -26,6 +26,7 @@
 #include <QStringListModel>
 #include "QGCApplication.h"
 #include "AppMessages.h"
+#include <QQuickView>
 
 
 #include <ui_login.h>
@@ -247,10 +248,6 @@ int main(int argc, char *argv[])
     QGCApplication* app = new QGCApplication(argc, argv, runUnitTests);
 
     app->init(app);
-    fpara = new FlightParamManagement();
-    fpara->initFromFile();
-    DbManager* db = new DbManager();
-    db->addUser("user", "", "user", "user");
     Q_CHECK_PTR(app);
 
 #ifdef Q_OS_LINUX
@@ -295,10 +292,19 @@ int main(int argc, char *argv[])
 #ifdef __android__
         checkAndroidWritePermission();
 #endif
+    fpara = new FlightParamManagement();
+    fpara->initFromFile();
+    DbManager* db = new DbManager();
+    db->addUser("user", "", "user", "user");
 
-        if (!app->_initForNormalAppBoot()) {
-            return -1;
-        }
+    Login _login(nullptr, db);
+    QQuickView view(QUrl("qrc:/qml/QGroundControl/Controls/LoginView.qml"));
+    QObject *item = view.rootObject();
+    //view.show();
+    QObject::connect(item, SIGNAL(connect_signal()), &_login, SLOT(connection()));
+    if (!app->_initForNormalAppBoot()) {
+        return -1;
+    }
 
         exitCode = app->exec();
     }

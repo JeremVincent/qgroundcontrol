@@ -16,8 +16,8 @@ extern QString username;
 Login::Login(QObject *parent, DbManager *db) : QObject(parent), dbManager(db)
 {
 //    QQuickView view(QUrl::fromLocalFile("qrc:/qml/PlanView.qml"));
-//    item = new QObject();
-//    item = view.rootObject()->findChild<QObject*>("dialog_connect");
+//    QObject item = new QObject()
+//    QObject item = view.rootObject()->findChild<QObject*>("dialog_connect");
 
 //    QObject::connect(item, SIGNAL(connect_signal()), this, SLOT(connection()));
     qDebug() << "down" ;
@@ -57,19 +57,15 @@ void Login::setPassword(const QString &pass)
 }
 
 
-bool Login::isConnected() {
-    return conn;
-}
 
-void Login::connexion(bool foo) {
+bool Login::connection() {
     qDebug() << "in connection";
-    if (username == "") return;
+    if (username == "") return false;
     QString mdp = QCryptographicHash::hash(pass.toUtf8(), QCryptographicHash::Sha3_256);
     qDebug() << mdp;
     QString mdp_base = dbManager->getPassword(username);
     if(mdp_base.compare(mdp) == 0) {
         qDebug() << "true";
-        conn = true;
         if (username.compare("admin") == 0) {
             admin* admin_widget = new admin(nullptr, dbManager);
             admin_widget->show();
@@ -79,10 +75,12 @@ void Login::connexion(bool foo) {
 //            user_widget->show();
 
         }
+        return true;
     }
     else {
-        conn = false;
         qDebug() << "false";
         QMessageBox::information(nullptr, "login error", "Wrong combinaison of login / password");
+
+        return false;
     }
 }
