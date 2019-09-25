@@ -126,6 +126,7 @@ const char* QGCApplication::_settingsVersionKey             = "SettingsVersion";
 const char* QGCApplication::_darkStyleFile          = ":/res/styles/style-dark.css";
 const char* QGCApplication::_lightStyleFile         = ":/res/styles/style-light.css";
 
+
 // Mavlink status structures for entire app
 mavlink_status_t m_mavlink_status[MAVLINK_COMM_NUM_BUFFERS];
 
@@ -171,7 +172,6 @@ QGCApplication::QGCApplication(int &argc, char* argv[], bool unitTesting)
     , _bluetoothAvailable       (false)
 {
     _app = this;
-
 
     QLocale locale = QLocale::system();
     //-- Some forced locales for testing
@@ -357,21 +357,25 @@ QGCApplication::QGCApplication(int &argc, char* argv[], bool unitTesting)
     initializeVideoStreaming(argc, argv, savePath.toUtf8().data(), gstDebugLevel.toUtf8().data());
 #endif
 
-    _toolbox = new QGCToolbox(this);
+    _checkForNewVersion();
+
+}
+
+void QGCApplication::init(QGCApplication* app) {
+
+    _toolbox = new QGCToolbox(app);
     _toolbox->setChildToolboxes();
 
 #ifndef __mobile__
-    _gpsRtkFactGroup = new GPSRTKFactGroup(this);
+    _gpsRtkFactGroup = new GPSRTKFactGroup(app);
    GPSManager *gpsManager = _toolbox->gpsManager();
    if (gpsManager) {
-       connect(gpsManager, &GPSManager::onConnect,          this, &QGCApplication::_onGPSConnect);
-       connect(gpsManager, &GPSManager::onDisconnect,       this, &QGCApplication::_onGPSDisconnect);
-       connect(gpsManager, &GPSManager::surveyInStatus,     this, &QGCApplication::_gpsSurveyInStatus);
-       connect(gpsManager, &GPSManager::satelliteUpdate,    this, &QGCApplication::_gpsNumSatellites);
+       connect(gpsManager, &GPSManager::onConnect,          app, &QGCApplication::_onGPSConnect);
+       connect(gpsManager, &GPSManager::onDisconnect,       app, &QGCApplication::_onGPSDisconnect);
+       connect(gpsManager, &GPSManager::surveyInStatus,     app, &QGCApplication::_gpsSurveyInStatus);
+       connect(gpsManager, &GPSManager::satelliteUpdate,    app, &QGCApplication::_gpsNumSatellites);
    }
 #endif /* __mobile__ */
-
-    _checkForNewVersion();
 }
 
 void QGCApplication::_shutdown(void)
@@ -450,6 +454,7 @@ void QGCApplication::_initCommon(void)
     qmlRegisterType<LogDownloadController>          (kQGCControllers,                       1, 0, "LogDownloadController");
     qmlRegisterType<SyslinkComponentController>     (kQGCControllers,                       1, 0, "SyslinkComponentController");
     qmlRegisterType<EditPositionDialogController>   (kQGCControllers,                       1, 0, "EditPositionDialogController");
+    qmlRegisterType<Login>                          ("Login", 1, 0, "Login");
 
 #ifndef __mobile__
     qmlRegisterType<ViewWidgetController>           (kQGCControllers,                       1, 0, "ViewWidgetController");
@@ -465,6 +470,8 @@ void QGCApplication::_initCommon(void)
     qmlRegisterSingletonType<QGroundControlQmlGlobal>   ("QGroundControl",                          1, 0, "QGroundControl",         qgroundcontrolQmlGlobalSingletonFactory);
     qmlRegisterSingletonType<ScreenToolsController>     ("QGroundControl.ScreenToolsController",    1, 0, "ScreenToolsController",  screenToolsControllerSingletonFactory);
     qmlRegisterSingletonType<ShapeFileHelper>           ("QGroundControl.ShapeFileHelper",          1, 0, "ShapeFileHelper",        shapeFileHelperSingletonFactory);
+
+
 }
 
 bool QGCApplication::_initForNormalAppBoot(void)

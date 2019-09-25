@@ -6,7 +6,7 @@
  * COPYING.md in the root of the source code directory.
  *
  ****************************************************************************/
-
+#include "Login.h"
 
 #ifndef QGCToolbox_h
 #define QGCToolbox_h
@@ -91,6 +91,7 @@ private:
     QGCPositionManager*         _qgcPositionManager     = nullptr;
     VideoManager*               _videoManager           = nullptr;
     MAVLinkLogManager*          _mavlinkLogManager      = nullptr;
+    Login*                      _login                  = nullptr;
     QGCCorePlugin*              _corePlugin             = nullptr;
     SettingsManager*            _settingsManager        = nullptr;
     AirspaceManager*            _airspaceManager        = nullptr;

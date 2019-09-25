@@ -378,7 +378,11 @@ INCLUDEPATH += \
 
 FORMS += \
     src/ui/MainWindow.ui \
-    src/QGCQmlWidgetHolder.ui \
+    src/QGCQmlWidgetHolder.ui \    ## perso
+    src/ui/admin.ui \
+    src/ui/dialogAddUser.ui \
+    src/ui/login.ui \
+    src/ui/userSpace.ui
 
 !MobileBuild {
 FORMS += \
@@ -406,14 +410,16 @@ HEADERS += \
     src/api/QGCSettings.h \
     src/api/QmlComponentInfo.h \
     src/comm/MavlinkMessagesTimer.h \
-    src/GPS/Drivers/src/base_station.h
+    src/GPS/Drivers/src/base_station.h \
+    src/ui/Login.h
 
 SOURCES += \
     src/api/QGCCorePlugin.cc \
     src/api/QGCOptions.cc \
     src/api/QGCSettings.cc \
     src/api/QmlComponentInfo.cc \
-    src/comm/MavlinkMessagesTimer.cc
+    src/comm/MavlinkMessagesTimer.cc \
+    src/ui/Login.cpp
 
 #
 # Unit Test specific configuration goes here (requires full debug build with all plugins)
@@ -625,8 +631,13 @@ HEADERS += \
     src/uas/UAS.h \
     src/uas/UASInterface.h \
     src/uas/UASMessageHandler.h \
-    src/UTM.h \
-
+    src/UTM.h \  ## perso
+    src/DataManager/flightparammanagement.h \
+    src/DataManager/dbmanager.h \
+    src/DataManager/geoportailmanager.h \
+    src/ui/admin.h \
+    src/ui/dialogAddUser.h \
+    src/ui/userSpace.h
 
 AndroidBuild {
 HEADERS += \
@@ -827,7 +838,13 @@ SOURCES += \
     src/main.cc \
     src/uas/UAS.cc \
     src/uas/UASMessageHandler.cc \
-    src/UTM.cpp \
+    src/UTM.cpp \ #perso
+    src/DataManager/flightparammanagement.cpp \
+    src/DataManager/dbmanager.cpp \
+    src/DataManager/geoportailmanager.cpp \
+    src/ui/admin.cpp \
+    src/ui/dialogAddUser.cpp \
+    src/ui/userSpace.cpp
 
 DebugBuild {
 SOURCES += \
@@ -1279,3 +1296,5 @@ contains (CONFIG, QGC_DISABLE_BUILD_SETUP) {
 #
 
 include(QGCInstaller.pri)
+
+DISTFILES +=

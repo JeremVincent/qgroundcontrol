@@ -28,12 +28,16 @@ import QGroundControl.ShapeFileHelper   1.0
 import QGroundControl.Airspace          1.0
 import QGroundControl.Airmap            1.0
 
+import Login                            1.0
+
 /// Mission Editor
 
 QGCView {
     id:         _qgcView
     viewPanel:  panel
     z:          QGroundControl.zOrderTopMost
+
+    signal connect_signal()
 
     property bool planControlColapsed: false
 
@@ -64,6 +68,7 @@ QGCView {
     property int    _editingLayer:                      _layerMission
     property int    _toolStripBottom:                   toolStrip.height + toolStrip.y
     property var    _appSettings:                       QGroundControl.settingsManager.appSettings
+    property var    _login:                             Login
 
     readonly property int       _layerMission:              1
     readonly property int       _layerGeoFence:             2
@@ -1160,12 +1165,58 @@ QGCView {
                     }
                 }
 
+                QGCButton {
+                    id: button_connect
+                    text:               qsTr("Connexion")
+                    Layout.fillWidth:   true
+                    Layout.columnSpan:  2
+                    enabled:            true
+                    visible:            !QGroundControl.corePlugin.options.disableVehicleConnection
+                    onClicked: {
+                        dropPanel.hide()
+                        dialog_login.open()
+                    }
+                }
+
             }
         }
     }
+
     MessageDialog {
         id: messageDialog_toomuch
         title: "Warning"
         text: "Limite de 10 missions enregistrées atteintes."
     }
+
+    Dialog {
+        id : dialog_login
+
+        ColumnLayout {
+            anchors.fill: parent
+            anchors.margins: 3
+            spacing: 3
+
+            TextField {
+                id: login
+                Layout.fillWidth: true
+                placeholderText: "Username"
+                text: _login.userName
+                onTextChanged: _login.userName = login.text
+            }
+
+            TextField {
+                id: password
+                Layout.fillWidth: true
+                placeholderText: "Password"
+
+                text: _login.pass
+                echoMode: TextInput.PasswordEchoOnEdit
+                onTextChanged: _login.pass = password.text
+            }
+            Button {
+
+            }
+        }
+    }
+
 } // QGCVIew

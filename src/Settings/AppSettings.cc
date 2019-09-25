@@ -34,13 +34,12 @@ const char* AppSettings::logDirectory =             "Logs";
 const char* AppSettings::videoDirectory =           "Video";
 const char* AppSettings::crashDirectory =           "CrashLogs";
 QString AppSettings::path;
-
-static QString username = "user";
-static int foo = 2;
+extern QString username;
 
 DECLARE_SETTINGGROUP(App, "")
 {
-    path = savePath()->rawValue().toString() + + "/" + username;
+
+    path = savePath()->rawValue().toString();// + "/" + username;
     QQmlEngine::setObjectOwnership(this, QQmlEngine::CppOwnership);
     qmlRegisterUncreatableType<AppSettings>("QGroundControl.SettingsManager", 1, 0, "AppSettings", "Reference only");
     QGCPalette::setGlobalTheme(indoorPalette()->rawValue().toBool() ? QGCPalette::Dark : QGCPalette::Light);
@@ -106,6 +105,7 @@ DECLARE_SETTINGSFACT_NO_FUNC(AppSettings, indoorPalette)
 void AppSettings::_checkSavePathDirectories(void)
 {
     //QDir savePathDir(savePath()->rawValue().toString() + "/" + username);
+    qDebug() << path;
     QDir savePathDir(path);
     if (!savePathDir.exists()) {
         qDebug() << savePathDir.absolutePath();
@@ -216,4 +216,9 @@ MAV_TYPE AppSettings::offlineEditingVehicleTypeFromVehicleType(MAV_TYPE vehicleT
     } else {
         return MAV_TYPE_QUADROTOR;
     }
+}
+
+void AppSettings::changeUser(QString newuser) {
+    username = newuser;
+    emit savePathsChanged();
 }

@@ -30,6 +30,9 @@
 #include "QGCOptions.h"
 #include "SettingsManager.h"
 #include "QGCApplication.h"
+#include "Login.h"
+#include "DataManager/dbmanager.h"
+#include <QQuickView>
 #if defined(QGC_AIRMAP_ENABLED)
 #include "AirMapManager.h"
 #else
@@ -42,6 +45,8 @@
 #if defined(QGC_CUSTOM_BUILD)
 #include CUSTOMHEADER
 #endif
+
+extern DbManager *db;
 
 QGCToolbox::QGCToolbox(QGCApplication* app)
 {
@@ -67,6 +72,7 @@ QGCToolbox::QGCToolbox(QGCApplication* app)
     _followMe               = new FollowMe                  (app, this);
     _videoManager           = new VideoManager              (app, this);
     _mavlinkLogManager      = new MAVLinkLogManager         (app, this);
+    _login                  = new Login                     (nullptr, db);
     //-- Airmap Manager
     //-- This should be "pluggable" so an arbitrary AirSpace manager can be used
     //-- For now, we instantiate the one and only AirMap provider
@@ -78,6 +84,11 @@ QGCToolbox::QGCToolbox(QGCApplication* app)
 #if defined(QGC_GST_TAISYNC_ENABLED)
     _taisyncManager         = new TaisyncManager            (app, this);
 #endif
+
+//    QQuickView view(QUrl("qrc:/qml/PlanView.qml"));
+//    QObject *item = (QObject*) view.rootObject();
+
+//    QObject::connect(item, SIGNAL(connect_signal()), _login, SLOT(connection()));
 }
 
 void QGCToolbox::setChildToolboxes(void)

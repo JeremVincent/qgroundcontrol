@@ -27,6 +27,14 @@
 #include "QGCApplication.h"
 #include "AppMessages.h"
 
+
+#include <ui_login.h>
+#include "ui/Login.h"
+#include "DataManager/dbmanager.h"
+#include <ui_userSpace.h>
+#include "ui/userSpace.h"
+#include "DataManager/flightparammanagement.h"
+
 #ifndef __mobile__
     #include "QGCSerialPortInfo.h"
     #include "RunGuard.h"
@@ -119,6 +127,14 @@ bool checkAndroidWritePermission() {
  * @param argv Commandline arguments
  * @return exit code, 0 for normal exit and !=0 for error cases
  */
+
+extern FlightParamManagement *fpara;
+extern QString username;
+extern DbManager *db;
+
+FlightParamManagement *fpara = nullptr;
+QString username;
+DbManager *db;
 
 int main(int argc, char *argv[])
 {
@@ -229,6 +245,12 @@ int main(int argc, char *argv[])
 #endif // QT_DEBUG
 
     QGCApplication* app = new QGCApplication(argc, argv, runUnitTests);
+
+    app->init(app);
+    fpara = new FlightParamManagement();
+    fpara->initFromFile();
+    DbManager* db = new DbManager();
+    db->addUser("user", "", "user", "user");
     Q_CHECK_PTR(app);
 
 #ifdef Q_OS_LINUX
@@ -273,9 +295,11 @@ int main(int argc, char *argv[])
 #ifdef __android__
         checkAndroidWritePermission();
 #endif
+
         if (!app->_initForNormalAppBoot()) {
             return -1;
         }
+
         exitCode = app->exec();
     }
 

@@ -150,6 +150,7 @@ public:
 
     /// Shutdown the application object
     void _shutdown(void);
+    void init(QGCApplication* app);
 
     bool _checkTelemetrySavePath(bool useMessageBox);
 

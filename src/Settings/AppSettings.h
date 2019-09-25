@@ -74,6 +74,8 @@ public:
     QString crashSavePath       ();
     int     nbFile              ();
 
+    void changeUser(QString newuser);
+
     static MAV_AUTOPILOT    offlineEditingFirmwareTypeFromFirmwareType  (MAV_AUTOPILOT firmwareType);
     static MAV_TYPE         offlineEditingVehicleTypeFromVehicleType    (MAV_TYPE vehicleType);
 
@@ -106,5 +108,4 @@ signals:
 private slots:
     void _indoorPaletteChanged();
     void _checkSavePathDirectories();
-
 };
