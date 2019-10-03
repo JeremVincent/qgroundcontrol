@@ -183,7 +183,7 @@ protected:
     QObject*            _loadedMissionItemsParent;	///< Parent for all items in _loadedMissionItems for simpler delete
     QList<MissionItem*> _loadedMissionItems;		///< Mission items loaded from plan file
 
-    QMap<QString, FactMetaData*> _metaDataMap;
+
 
     SettingsFact _turnAroundDistanceFact;
     SettingsFact _cameraTriggerInTurnAroundFact;
@@ -207,6 +207,7 @@ private slots:
     void _followTerrainChanged              (bool followTerrain);
 
 private:
+    QMap<QString, FactMetaData*> _metaDataMap;
     void    _queryTransectsPathHeightInfo   (void);
     void    _adjustTransectsForTerrain      (void);
     void    _addInterstitialTerrainPoints   (QList<CoordInfo_t>& transect, const QList<TerrainPathQuery::PathHeightInfo_t>& transectPathHeightInfo);

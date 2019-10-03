@@ -294,14 +294,15 @@ int main(int argc, char *argv[])
 #endif
     fpara = new FlightParamManagement();
     fpara->initFromFile();
-    DbManager* db = new DbManager();
+    db = new DbManager();
     db->addUser("user", "", "user", "user");
 
-    Login _login(nullptr, db);
-    QQuickView view(QUrl("qrc:/qml/QGroundControl/Controls/LoginView.qml"));
-    QObject *item = view.rootObject();
-    //view.show();
-    QObject::connect(item, SIGNAL(connect_signal()), &_login, SLOT(connection()));
+//    Login _login(nullptr, db);
+//    QQuickView view(QUrl("qrc:/qml/QGroundControl/Controls/LoginView.qml"));
+//    QObject *item = view.rootObject();
+//    view.show();
+//    qDebug()<< item;
+//    QObject::connect(item, SIGNAL(connect_signal()), &_login, SLOT(connection()));
     if (!app->_initForNormalAppBoot()) {
         return -1;
     }

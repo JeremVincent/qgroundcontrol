@@ -51,6 +51,7 @@ void Login::setPassword(const QString &pass)
 {
     if (this->pass == pass)
         return;
+    qDebug() << "ffhuqidl";
 
     this->pass = pass;
     emit passwordChanged();
@@ -60,6 +61,7 @@ void Login::setPassword(const QString &pass)
 
 bool Login::connection() {
     qDebug() << "in connection";
+    qDebug() << username;
     if (username == "") return false;
     QString mdp = QCryptographicHash::hash(pass.toUtf8(), QCryptographicHash::Sha3_256);
     qDebug() << mdp;
@@ -73,6 +75,7 @@ bool Login::connection() {
         else {
 //            userSpace* user_widget = new userSpace(nullptr, &login, dbManager);
 //            user_widget->show();
+//          le user space, c'est l'application de base !
 
         }
         return true;

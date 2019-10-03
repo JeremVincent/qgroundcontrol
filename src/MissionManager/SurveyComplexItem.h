@@ -76,13 +76,14 @@ public:
 signals:
     void refly90DegreesChanged(bool refly90Degrees);
 
-private slots:
+protected slots:
     // Overrides from TransectStyleComplexItem
     void _rebuildTransectsPhase1    (void) final;
     void _recalcComplexDistance     (void) final;
     void _recalcCameraShots         (void) final;
 
-private:
+protected:
+//    QMap<QString, FactMetaData*> _metaDataMap;
     enum CameraTriggerCode {
         CameraTriggerNone,
         CameraTriggerOn,
@@ -126,13 +127,6 @@ private:
     bool _VertexCanSeeOther(const QPolygonF& polygon, const QPointF* vertexA, const QPointF* vertexB);
     bool _VertexIsReflex(const QPolygonF& polygon, const QPointF* vertex);
 
-    QMap<QString, FactMetaData*> _metaDataMap;
-
-    SettingsFact    _gridAngleFact;
-    SettingsFact    _flyAlternateTransectsFact;
-    SettingsFact    _splitConcavePolygonsFact;
-    int             _entryPoint;
-
     static const char* _jsonGridAngleKey;
     static const char* _jsonEntryPointKey;
     static const char* _jsonFlyAlternateTransectsKey;
@@ -166,4 +160,10 @@ private:
 
 
     static const int _hoverAndCaptureDelaySeconds = 4;
+private:
+    QMap<QString, FactMetaData*> _metaDataMap;
+    SettingsFact    _gridAngleFact;
+    SettingsFact    _flyAlternateTransectsFact;
+    SettingsFact    _splitConcavePolygonsFact;
+    int             _entryPoint;
 };

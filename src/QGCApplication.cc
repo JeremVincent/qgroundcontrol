@@ -454,7 +454,7 @@ void QGCApplication::_initCommon(void)
     qmlRegisterType<LogDownloadController>          (kQGCControllers,                       1, 0, "LogDownloadController");
     qmlRegisterType<SyslinkComponentController>     (kQGCControllers,                       1, 0, "SyslinkComponentController");
     qmlRegisterType<EditPositionDialogController>   (kQGCControllers,                       1, 0, "EditPositionDialogController");
-    qmlRegisterType<Login>                          ("Login", 1, 0, "Login");
+//    qmlRegisterType<Login>                          ("QGroundControl.Login", 1, 0, "Login");
 
 #ifndef __mobile__
     qmlRegisterType<ViewWidgetController>           (kQGCControllers,                       1, 0, "ViewWidgetController");

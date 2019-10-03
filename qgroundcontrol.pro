@@ -405,6 +405,7 @@ FORMS += \
 #
 
 HEADERS += \
+    src/MissionManager/ParcelleComplexItem.hpp \
     src/api/QGCCorePlugin.h \
     src/api/QGCOptions.h \
     src/api/QGCSettings.h \
@@ -414,6 +415,7 @@ HEADERS += \
     src/ui/Login.h
 
 SOURCES += \
+    src/MissionManager/ParcelleComplexItem.cpp \
     src/api/QGCCorePlugin.cc \
     src/api/QGCOptions.cc \
     src/api/QGCSettings.cc \
