@@ -6,6 +6,7 @@
 #include "DataManager/DbManager.h"
 
 extern DbManager *db;
+extern QString username;
 
 SqlParcelleModel::SqlParcelleModel(QObject *parent)
     : QSqlRelationalTableModel(parent, db->getDB()) {
@@ -64,6 +65,8 @@ void SqlParcelleModel::setupForParcelle() {
 
 
     this->setTable("Parcelle");
+    QString filtre = QString("owner = \'") + username + QString("\'");
+    this->setFilter(filtre);
     this->setEditStrategy(QSqlTableModel::OnManualSubmit);
     this->generateRoleNames();
     this->select();
