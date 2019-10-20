@@ -149,6 +149,7 @@ Item {
                             tableView.selection.clear()
 
                             _parcelleManagerController.addToMission(parcelleModel,_planMasterController.missionController,selected)
+                            parcelleManagerPopup.close()
                        }
                 }
                 Button {
