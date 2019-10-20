@@ -116,8 +116,15 @@ Item {
                     Layout.fillWidth: true
                     Layout.margins : margin
                     text: "Add Parcelle"
+
                     onClicked: {
-                        addParcelleDialog.open()
+                        if(QGroundControl.settingsManager.appSettings.nbParcelle < 11) {
+                            addParcelleDialog.open()
+                        }
+                        else {
+                            messageDialog_toomuch.open()
+                        }
+
                     }
                 }
                 Button {
@@ -338,5 +345,11 @@ Item {
         }
     }
 
+
+    MessageDialog {
+        id: messageDialog_toomuch
+        title: "Warning"
+        text: "Limite de 10 parcelles enregistrées atteintes."
+    }
 
 }
