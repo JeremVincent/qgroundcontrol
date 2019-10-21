@@ -30,6 +30,7 @@ public slots:
     void modifyParcelle(SqlParcelleModel *model, int index, QString owner, QString parcelleFile, QString type, int speed);
     void addParcelle(SqlParcelleModel *model, QString ilotNumber, QString file, QString type, int speed);
     void requestReply(QNetworkReply *reply);
+    bool verif(QString user, QString pass);
 
 private:
     void requestParcelle(QString nbIlot);
