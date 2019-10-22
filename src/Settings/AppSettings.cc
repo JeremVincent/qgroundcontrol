@@ -61,6 +61,12 @@ DECLARE_SETTINGGROUP(App, "")
         savePathFact->setRawValue(rootDir.filePath(appName));
     }
 
+    qDebug() << "---------------------";
+    qDebug() << savePath()->rawValue().toString();
+    savePathFact->setRawValue(savePath()->rawValue().toString() + "/" + username);
+    qDebug() << savePath()->rawValue().toString();
+    qDebug() << "---------------------";
+
     connect(savePathFact, &Fact::rawValueChanged, this, &AppSettings::savePathsChanged);
     connect(savePathFact, &Fact::rawValueChanged, this, &AppSettings::_checkSavePathDirectories);
 

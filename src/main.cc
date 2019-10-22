@@ -217,7 +217,7 @@ bool checkAndroidWritePermission() {
 
 
 extern QString username;
-QString username = "";
+QString username = "foobar";
 
 
 extern DbManager *db;

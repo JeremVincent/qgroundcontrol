@@ -123,6 +123,8 @@
 
 #include "QGCMapEngine.h"
 
+extern QString username;
+
 QGCApplication* QGCApplication::_app = nullptr;
 
 const char* QGCApplication::_deleteAllSettingsKey           = "DeleteAllSettingsNextBoot";
@@ -302,7 +304,7 @@ QGCApplication::QGCApplication(int &argc, char* argv[], bool unitTesting)
 #else
     QString savePath, gstDebugLevel;
     if (settings.contains(AppSettings::savePathName)) {
-        savePath = settings.value(AppSettings::savePathName).toString();
+        savePath = settings.value(AppSettings::savePathName).toString() + "/" + username;
     }
     if(savePath.isEmpty()) {
         savePath = "/tmp";
