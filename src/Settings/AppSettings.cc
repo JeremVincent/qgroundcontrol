@@ -63,8 +63,8 @@ DECLARE_SETTINGGROUP(App, "")
 
     qDebug() << "---------------------";
     qDebug() << savePath()->rawValue().toString();
-    savePathFact->setRawValue(savePath()->rawValue().toString() + "/" + username);
-    qDebug() << savePath()->rawValue().toString();
+    //savePathFact->setRawValue(savePath()->rawValue().toString() + "/" + username);
+    //qDebug() << savePath()->rawValue().toString();
     qDebug() << "---------------------";
 
     connect(savePathFact, &Fact::rawValueChanged, this, &AppSettings::savePathsChanged);
