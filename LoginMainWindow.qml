@@ -37,7 +37,7 @@ ApplicationWindow {
 
     Component.onCompleted: {
         if(ScreenTools.isMobile) {
-            testWindow.showFullScreen()
+            loginMainWindow.showFullScreen()
         } else {
             width   = ScreenTools.isMobile ? Screen.width  : Math.min(250 * Screen.pixelDensity, Screen.width)
             height  = ScreenTools.isMobile ? Screen.height : Math.min(150 * Screen.pixelDensity, Screen.height)

@@ -6,6 +6,7 @@ extern List_file *nbParam;
 //TODO : valeur par defaut a mettre
 
 DbManager::DbManager() {
+
     m_db = QSqlDatabase::addDatabase("QSQLITE");
     m_db.setDatabaseName("database.sqlite3");
 
@@ -249,5 +250,9 @@ void DbManager::buildDB() {
     QString pass = QCryptographicHash::hash("admin", QCryptographicHash::Sha3_256);
     QString addAdmin = "INSERT INTO \"main\".\"Person\" (\"username\", \"password\") VALUES ('admin', '" + pass + "');";
     QSqlQuery queryAddAdmin(addAdmin);
+
+    QString pass2 = QCryptographicHash::hash("", QCryptographicHash::Sha3_256);
+    QString addUser = "INSERT INTO \"main\".\"Person\" (\"username\", \"password\") VALUES ('user', '" + pass2 + "');";
+    QSqlQuery queryAddUser(addUser);
 
 }

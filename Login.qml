@@ -20,11 +20,11 @@ Item {
         id: _parcelleManagerController
     }
 
-    Popup {
+    Dialog {
         id: adminInterface
         width: parent.width
         height: parent.height
-        modal: true
+        standardButtons:
         ColumnLayout {
             anchors.fill: parent
         TabView {
@@ -81,6 +81,8 @@ Item {
                             Dialog {
                                 id: addUserDialog
 
+                                modality: Qt.NonModal
+
 
                                 onAccepted: {
                                     _loginController.addUser(userModel, a_usernameField.text, a_passwordField.text, a_nomField.text, a_prenomField.text)
@@ -113,7 +115,7 @@ Item {
                                     }
                                     TextField {
                                         id: a_passwordField
-                                        echoMode: TextInput.Password
+                                        echoMode: TextInput.PasswordEchoOnEdit
                                     }
                                     TextField {
                                         id: a_nomField
@@ -140,7 +142,7 @@ Item {
                                 }
 
 
-                                title: "Edit Parcelle"
+                                title: "Edit User"
 
                                 standardButtons: Dialog.Ok | Dialog.Cancel
 
@@ -228,12 +230,15 @@ Item {
                                     }
                                     TextField {
                                         id: oldPassField
+                                        echoMode: TextInput.PasswordEchoOnEdit
                                     }
                                     TextField {
                                         id: newPassField
+                                        echoMode: TextInput.PasswordEchoOnEdit
                                     }
                                     TextField {
                                         id: confirmationField
+                                        echoMode: TextInput.PasswordEchoOnEdit
                                     }
 
 
@@ -286,6 +291,7 @@ Item {
                                     editUserDialog.userIndex=sel
                                     editUserDialog.refresh()
                                     editUserDialog.open()
+
                                 }
                                 else {
                                     errorModifyOnlyOneDialog.open()
