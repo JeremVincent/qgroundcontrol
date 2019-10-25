@@ -56,6 +56,9 @@ public:
     Q_PROPERTY(QString videoSavePath        READ videoSavePath      NOTIFY savePathsChanged)
     Q_PROPERTY(QString crashSavePath        READ crashSavePath      NOTIFY savePathsChanged)
 
+    Q_PROPERTY(bool nbMission               READ nbMission          NOTIFY savePathsChanged)
+    Q_PROPERTY(bool nbParcelle              READ nbParcelle         NOTIFY savePathsChanged)
+
     Q_PROPERTY(QString planFileExtension        MEMBER planFileExtension        CONSTANT)
     Q_PROPERTY(QString missionFileExtension     MEMBER missionFileExtension     CONSTANT)
     Q_PROPERTY(QString waypointsFileExtension   MEMBER waypointsFileExtension   CONSTANT)
@@ -71,6 +74,10 @@ public:
     QString logSavePath         ();
     QString videoSavePath       ();
     QString crashSavePath       ();
+
+    bool    nbMission           ();
+    bool    nbParcelle          ();
+    void _checkSavePathDirectories();
 
     static MAV_AUTOPILOT    offlineEditingFirmwareTypeFromFirmwareType  (MAV_AUTOPILOT firmwareType);
     static MAV_TYPE         offlineEditingVehicleTypeFromVehicleType    (MAV_TYPE vehicleType);
@@ -100,6 +107,5 @@ signals:
 
 private slots:
     void _indoorPaletteChanged();
-    void _checkSavePathDirectories();
 
 };

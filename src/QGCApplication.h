@@ -167,9 +167,9 @@ private:
     QObject* _rootQmlObject(void);
     void _checkForNewVersion(void);
 
-#ifdef __mobile__
+//#ifdef __mobile__
     QQmlApplicationEngine* _qmlAppEngine;
-#endif
+//#endif
 
     bool _runningUnitTests; ///< true: running unit tests, false: normal app
     bool _logOutput;        ///< true: Log Qt debug output to file

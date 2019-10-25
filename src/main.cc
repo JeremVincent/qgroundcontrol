@@ -26,6 +26,10 @@
 #include <QStringListModel>
 #include "QGCApplication.h"
 #include "AppMessages.h"
+#include "DataManager/DbManager.h"
+#include "Admin/List_file.h"
+
+#include "ParcelleManagerController.h"
 
 #ifndef __mobile__
     #include "QGCSerialPortInfo.h"
@@ -111,6 +115,23 @@ bool checkAndroidWritePermission() {
    return true;
 }
 #endif
+
+
+extern QString username;
+QString username = "";
+
+
+extern DbManager *db;
+DbManager *db;
+
+extern List_file *checklist;
+List_file *checklist;
+
+extern List_file *speedParam;
+List_file *speedParam;
+
+extern List_file *nbParam;
+List_file *nbParam;
 
 /**
  * @brief Starts the application
@@ -273,6 +294,51 @@ int main(int argc, char *argv[])
 #ifdef __android__
         checkAndroidWritePermission();
 #endif
+
+        checklist = new List_file("Checklist");
+                //param par defaut if the file is empty
+                if (! checklist->load()) {
+                    qDebug() << "checklist file is empty";
+                    checklist->append("RAS: Rien a Signaler");
+                }
+
+                // verifier qu'il n'y a qu'une occurence de :
+                for(QList<QString>::iterator i = checklist->begin(); i != checklist->end(); ++i) {
+                    if((*i).count(":") < 1) {
+                        (*i).append(":foo");
+                    }
+                    if((*i).count(":") > 1) {
+                        int index = (*i).indexOf(":");
+                        (*i) = (*i).replace(":", ";");
+                        (*i) = (*i).replace(index, 1, ":");
+                    }
+                }
+
+                speedParam = new List_file("SpeedParam");
+                //param par defaut if the file is empty
+                if (! speedParam->load()) {
+                    qDebug() << "speedParam file is empty";
+                    speedParam->clear();
+                    speedParam->append("15");
+                    speedParam->append("30");
+                    speedParam->append("40");
+                }
+
+                //permet de contenir le nombre de sessions, missions et parcelles
+                nbParam = new List_file("nbParam");
+                //param par defaut if the file is empty
+                if (! nbParam->load()) {
+                    qDebug() << "nbParam file is empty";
+                    nbParam->clear();
+                    nbParam->append("10"); //session
+                    nbParam->append("10"); //parcelle
+                    nbParam->append("10"); //mission
+                }
+
+                db = new DbManager();
+                db->buildDB();
+
+
         if (!app->_initForNormalAppBoot()) {
             return -1;
         }

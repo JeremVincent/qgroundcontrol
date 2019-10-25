@@ -401,19 +401,31 @@ FORMS += \
 #
 
 HEADERS += \
+    src/Admin/GeoportailLink.h \
+    src/Admin/List_file.h \
+    src/DataManager/DbManager.h \
+    src/MissionManager/ParcelleManagerController.h \
+    src/MissionManager/SqlCustomModel.h \
     src/api/QGCCorePlugin.h \
     src/api/QGCOptions.h \
     src/api/QGCSettings.h \
     src/api/QmlComponentInfo.h \
     src/comm/MavlinkMessagesTimer.h \
-    src/GPS/Drivers/src/base_station.h
+    src/GPS/Drivers/src/base_station.h \
+    src/ui/LoginController.h
 
 SOURCES += \
+    src/Admin/GeoportailLink.cpp \
+    src/Admin/List_file.cpp \
+    src/DataManager/DbManager.cpp \
+    src/MissionManager/ParcelleManagerController.cpp \
+    src/MissionManager/SqlCustomModel.cpp \
     src/api/QGCCorePlugin.cc \
     src/api/QGCOptions.cc \
     src/api/QGCSettings.cc \
     src/api/QmlComponentInfo.cc \
-    src/comm/MavlinkMessagesTimer.cc
+    src/comm/MavlinkMessagesTimer.cc \
+    src/ui/LoginController.cpp
 
 #
 # Unit Test specific configuration goes here (requires full debug build with all plugins)

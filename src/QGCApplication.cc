@@ -91,6 +91,9 @@
 #include "QGCFileDownload.h"
 #include "FirmwareImage.h"
 
+#include "LoginController.h"
+#include "SqlCustomModel.h"
+
 #ifndef NO_SERIAL_LINK
 #include "SerialLink.h"
 #endif
@@ -451,6 +454,9 @@ void QGCApplication::_initCommon(void)
     qmlRegisterType<SyslinkComponentController>     (kQGCControllers,                       1, 0, "SyslinkComponentController");
     qmlRegisterType<EditPositionDialogController>   (kQGCControllers,                       1, 0, "EditPositionDialogController");
 
+    qmlRegisterType<ParcelleManagerController>      (kQGCControllers,                       1, 0, "ParcelleManagerController");
+    qmlRegisterType<LoginController>                (kQGCControllers,                       1, 0, "LoginController");
+
 #ifndef __mobile__
     qmlRegisterType<ViewWidgetController>           (kQGCControllers,                       1, 0, "ViewWidgetController");
     qmlRegisterType<CustomCommandWidgetController>  (kQGCControllers,                       1, 0, "CustomCommandWidgetController");
@@ -465,6 +471,7 @@ void QGCApplication::_initCommon(void)
     qmlRegisterSingletonType<QGroundControlQmlGlobal>   ("QGroundControl",                          1, 0, "QGroundControl",         qgroundcontrolQmlGlobalSingletonFactory);
     qmlRegisterSingletonType<ScreenToolsController>     ("QGroundControl.ScreenToolsController",    1, 0, "ScreenToolsController",  screenToolsControllerSingletonFactory);
     qmlRegisterSingletonType<ShapeFileHelper>           ("QGroundControl.ShapeFileHelper",          1, 0, "ShapeFileHelper",        shapeFileHelperSingletonFactory);
+    qmlRegisterType<SqlCustomModel>                   ("QGroundControl",                            1, 0, "SqlCustomModel");
 }
 
 bool QGCApplication::_initForNormalAppBoot(void)
@@ -476,19 +483,21 @@ bool QGCApplication::_initForNormalAppBoot(void)
     // Exit main application when last window is closed
     connect(this, &QGCApplication::lastWindowClosed, this, QGCApplication::quit);
 
-#ifdef __mobile__
+//#ifdef __mobile__
     _qmlAppEngine = toolbox()->corePlugin()->createRootWindow(this);
 
-    // Safe to show popup error messages now that main window is created
-    UASMessageHandler* msgHandler = qgcApp()->toolbox()->uasMessageHandler();
-    if (msgHandler) {
-        msgHandler->showErrorsInToolbar();
-    }
-#else
-    // Start the user interface
-    MainWindow* mainWindow = MainWindow::_create();
-    Q_CHECK_PTR(mainWindow);
-#endif
+//    // Safe to show popup error messages now that main window is created
+//    UASMessageHandler* msgHandler = qgcApp()->toolbox()->uasMessageHandler();
+//    if (msgHandler) {
+//        msgHandler->showErrorsInToolbar();
+//    }
+//#else
+//    // Start the user interface
+//    MainWindow* mainWindow = MainWindow::_create();
+//    Q_CHECK_PTR(mainWindow);
+//#endif
+
+    LoginController::qmlAppEngine = _qmlAppEngine;
 
     // Now that main window is up check for lost log files
     connect(this, &QGCApplication::checkForLostLogFiles, toolbox()->mavlinkProtocol(), &MAVLinkProtocol::checkForLostLogFiles);

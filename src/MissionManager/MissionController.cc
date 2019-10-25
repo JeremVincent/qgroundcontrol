@@ -2161,3 +2161,53 @@ void MissionController::_complexBoundingBoxChanged()
 {
     _updateTimer.start(UPDATE_TIMEOUT);
 }
+
+
+void MissionController::insertComplexMissionFromDialog(QMap<QString, double> fileList) {
+
+    int i = _missionItemCount+1;    // +1 because 0 is the start !!
+    QList<ComplexMissionItem*> *toInsert = new QList<ComplexMissionItem*>();
+    for (QMap<QString, double>::iterator j = fileList.begin(); j != fileList.end(); ++j) {
+        qDebug() << (*j);
+        SurveyComplexItem *foo = new SurveyComplexItem(_controllerVehicle, _flyView, j.key(), _visualItems);
+        foo->setCruiseSpeed(j.value());
+        toInsert->append(foo);
+    }
+    *toInsert = sortToCW(*toInsert);
+    for (QList<ComplexMissionItem*>::iterator j = toInsert->begin(); j != toInsert->end(); ++j) {
+        _insertComplexMissionItemWorker((*j), i);
+        i++;
+    }
+
+}
+
+QList<ComplexMissionItem*> MissionController::sortToCW(QList<ComplexMissionItem*> toSort) {
+
+    double meanLat = 0.0;
+    double meanLong = 0.0;
+    QList<ComplexMissionItem*> *toSort_R = new QList<ComplexMissionItem*>();
+    QList<ComplexMissionItem*> *toSort_L = new QList<ComplexMissionItem*>();
+
+    QMap<double, ComplexMissionItem*> *missionToAngle_L = new QMap<double, ComplexMissionItem*> ();
+    QMap<double, ComplexMissionItem*> *missionToAngle_R = new QMap<double, ComplexMissionItem*> ();
+    for (QList<ComplexMissionItem*>::iterator i = toSort.begin(); i != toSort.end(); ++i) {
+        meanLat = meanLat + (*i)->coordinate().latitude();
+        meanLong = meanLong + (*i)->coordinate().longitude();
+        if ((*i)->coordinate().longitude() > 0) toSort_R->append(*i);
+        else toSort_L->append(*i);
+    }
+    meanLat = meanLat / toSort.size();
+    meanLong = meanLat / toSort.size();
+
+    //par construction, une QMap est triée
+    for (QList<ComplexMissionItem*>::iterator i = toSort_L->begin(); i != toSort_L->end(); ++i) {
+        missionToAngle_L->insert((*i)->coordinate().latitude() / (*i)->coordinate().longitude(), (*i));
+    }
+
+    //par construction, une QMap est triée
+    for (QList<ComplexMissionItem*>::iterator i = toSort_R->begin(); i != toSort_R->end(); ++i) {
+        missionToAngle_R->insert((*i)->coordinate().latitude() / (*i)->coordinate().longitude(), (*i));
+    }
+
+    return (missionToAngle_L->values() + missionToAngle_R->values());
+}

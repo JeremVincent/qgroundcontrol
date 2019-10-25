@@ -17,8 +17,13 @@
 #include "Vehicle.h"
 #include "MultiVehicleManager.h"
 #include "QGCLoggingCategory.h"
+#include "QGCComboBox.h"
+#include "ParcelleManagerController.h"
+#include "Admin/List_file.h"
 
 Q_DECLARE_LOGGING_CATEGORY(PlanMasterControllerLog)
+
+extern List_file* checklist;
 
 /// Master controller for mission, fence, rally
 class PlanMasterController : public QObject
@@ -69,6 +74,8 @@ public:
     Q_INVOKABLE void saveToKml(const QString& filename);
     Q_INVOKABLE void removeAll(void);                       ///< Removes all from controller only, synce required to remove from vehicle
     Q_INVOKABLE void removeAllFromVehicle(void);            ///< Removes all from vehicle and controller
+
+    Q_INVOKABLE QList<QString> getCustomChecklist(void) {return *checklist;}
 
     MissionController*      missionController(void)     { return &_missionController; }
     GeoFenceController*     geoFenceController(void)    { return &_geoFenceController; }

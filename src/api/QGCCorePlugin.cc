@@ -17,6 +17,8 @@
 #include "QmlObjectListModel.h"
 #include "VideoReceiver.h"
 #include "QGCLoggingCategory.h"
+#include "LoginController.h"
+
 
 #if !defined(__mobile__)
 #include "QGCQmlWidgetHolder.h"
@@ -291,7 +293,8 @@ QQmlApplicationEngine* QGCCorePlugin::createRootWindow(QObject *parent)
     pEngine->addImportPath("qrc:/qml");
     pEngine->rootContext()->setContextProperty("joystickManager", qgcApp()->toolbox()->joystickManager());
     pEngine->rootContext()->setContextProperty("debugMessageModel", AppMessages::getModel());
-    pEngine->load(QUrl(QStringLiteral("qrc:/qml/MainWindowNative.qml")));
+//    pEngine->load(QUrl(QStringLiteral("qrc:/qml/MainWindowNative.qml")));
+    pEngine->load(QUrl(QStringLiteral("qrc:/qml/LoginMainWindow.qml")));
     return pEngine;
 }
 

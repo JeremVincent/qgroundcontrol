@@ -1532,3 +1532,16 @@ double SurveyComplexItem::additionalTimeDelay (void) const
 
     return hoverTime;
 }
+
+void SurveyComplexItem::setCruiseSpeed (double speed) {
+//    qDebug() << "--------- survey setCruiseSpeed";
+    _cruiseSpeed = speed;
+    _recalcComplexDistance();
+}
+
+double SurveyComplexItem::specifiedFlightSpeed() {
+//    qDebug() << "----- survey specifiedFlightSpeed -----";
+//    qDebug() << _cruiseSpeed;
+    if (_cruiseSpeed < 0) _cruiseSpeed = 15;
+    return _cruiseSpeed;
+}

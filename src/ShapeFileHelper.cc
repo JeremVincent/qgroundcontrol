@@ -11,11 +11,18 @@
 #include "AppSettings.h"
 #include "KMLFileHelper.h"
 #include "SHPFileHelper.h"
+#include "DataManager/DbManager.h"
+
 
 #include <QFile>
 #include <QVariant>
+#include "QGCQGeoCoordinate.h"
+
 
 const char* ShapeFileHelper::_errorPrefix = QT_TR_NOOP("Shape file load failed. %1");
+
+extern QString username;
+extern DbManager *db;
 
 QVariantList ShapeFileHelper::determineShapeType(const QString& file)
 {
@@ -106,4 +113,54 @@ QStringList ShapeFileHelper::fileDialogKMLFilters(void) const
 QStringList ShapeFileHelper::fileDialogKMLOrSHPFilters(void) const
 {
     return QStringList(tr("KML/SHP Files (*.%1 *.%2)").arg(AppSettings::kmlFileExtension).arg(AppSettings::shpFileExtension));
+}
+
+bool ShapeFileHelper::savePolygonFromGeoportail(QString filepath, QString content) {
+    QFile file( filepath );
+    if ( file.open(QIODevice::WriteOnly) ) {
+        QTextStream stream( &file );
+        stream << content;
+        file.close();
+        return true;
+    }
+    qDebug() << "ERROR";
+    return -1;
+}
+
+bool ShapeFileHelper::savePolygonToKML(QString path, QmlObjectListModel* _polygonModel, int speed) {
+    QFile file( path );
+    if ( file.open(QIODevice::WriteOnly) ) {
+        QTextStream stream( &file );
+        stream << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << endl;
+        stream << "<kml xmlns=\"http://www.opengis.net/kml/2.2\">" << endl;
+        stream << "<Placemark>" << endl;
+        stream << "<name>The Pentagon</name>" << endl;
+        stream << "<Polygon>" << endl;
+        stream << "<extrude>1</extrude>" << endl;
+        stream << "<outerBoundaryIs>" << endl;
+        stream << "<LinearRing>" << endl;
+        stream << "<coordinates>" << endl;
+
+        QString first = ((QGCQGeoCoordinate*) (_polygonModel->objectList()->first()))->toString();
+
+        for (QList<QObject*>::iterator j = _polygonModel->objectList()->begin(); j != _polygonModel->objectList()->end(); j++)
+        {
+            qDebug() << (((QGCQGeoCoordinate*) (*j))->toString());
+            stream << (((QGCQGeoCoordinate*) (*j))->toString()) << ",50" << endl; //le dernier element étant l'altitude du tracé, il n'est pas important
+        }
+
+
+        stream << first << ",50" << endl;
+        stream << "</coordinates>" << endl;
+        stream << "</LinearRing>" << endl;
+        stream << "</outerBoundaryIs>" << endl;
+        stream << "</Polygon>" << endl;
+        stream << "</Placemark>" << endl;
+        stream << "</kml>" << endl;
+        file.close();
+
+        return 0;
+    }
+    qDebug() << "ERROR";
+    return -1;
 }

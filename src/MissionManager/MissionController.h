@@ -124,6 +124,8 @@ public:
     /// @return Sequence number for new item
     Q_INVOKABLE int insertComplexMissionItemFromKMLOrSHP(QString itemName, QString file, int i);
 
+    Q_INVOKABLE void insertComplexMissionFromDialog(QMap<QString, double> fileList);
+
     Q_INVOKABLE void resumeMission(int resumeIndex);
 
     /// Updates the altitudes of the items in the current mission to the new default altitude
@@ -193,6 +195,10 @@ public:
 
     int  batteryChangePoint         (void) const { return _missionFlightStatus.batteryChangePoint; }    ///< -1 for not supported, 0 for not needed
     int  batteriesRequired          (void) const { return _missionFlightStatus.batteriesRequired; }     ///< -1 for not supported
+
+
+    QList<ComplexMissionItem*> sortToCW(QList<ComplexMissionItem*> toSort);
+
 
     // These are the names shown in the UI for the pattern items. They are public so custom builds can remove the ones
     // they don't want through the QGCCorePlugin::

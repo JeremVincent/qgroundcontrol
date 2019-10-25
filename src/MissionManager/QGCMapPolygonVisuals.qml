@@ -9,9 +9,12 @@
 
 import QtQuick          2.3
 import QtQuick.Controls 1.2
+import QtQuick.Controls 2.4
 import QtLocation       5.3
 import QtPositioning    5.3
 import QtQuick.Dialogs  1.2
+import QtQuick.Layouts  1.0
+
 
 import QGroundControl                   1.0
 import QGroundControl.ScreenTools       1.0
@@ -188,6 +191,69 @@ Item {
         }
     }
 
+    Dialog {
+            id: saveAsParcelleDialog
+
+            x: (mainWindow.width - width) / 2
+            y: (mainWindow.height - height) / 2
+            modal: true
+
+
+            onAccepted: {
+                if(mapPolygon.checkIfExist(QGroundControl.settingsManager.appSettings.missionSavePath + "/" + a_nameField.text)) {
+                    mapPolygon.saveAsParcelle(QGroundControl.settingsManager.appSettings.missionSavePath + "/" + a_nameField.text, a_typeField.text, a_speedBox.value)
+
+                }
+                else {
+                     parcelleExistsDialog.open()
+
+                }
+            }
+
+
+            title: "Save as Parcelle"
+
+            standardButtons: Dialog.Ok | Dialog.Cancel
+
+                GridLayout {
+                    columns: 3
+                    anchors.fill: parent
+
+                    Label {
+                        id : verifLabel
+                        Layout.columnSpan: 3
+                        text : mapPolygon.verifArea
+                    }
+
+
+                    Label {
+                        text: "Name"
+                    }
+                    Label {
+                        text: "Type"
+                    }
+                    Label {
+                        text: "Speed"
+
+                    }
+                    TextField {
+                        id: a_nameField
+                    }
+                    TextField {
+                        id: a_typeField
+                    }
+                    SpinBox {
+                        maximumValue: 3
+                        minimumValue: 1
+                        id: a_speedBox
+                    }
+
+            }
+
+
+        }
+
+
     Menu {
         id: menu
 
@@ -250,6 +316,20 @@ Item {
             text:           qsTr("Load KML/SHP...")
             onTriggered:    kmlOrSHPLoadDialog.openForLoad()
         }
+
+        QGCMenuItem {
+                    text:           qsTr("Save as Parcelle...")
+                    onTriggered: {
+                        if(QGroundControl.settingsManager.appSettings.nbParcelle) {
+                            verifLabel.text= mapPolygon.verifArea
+                            saveAsParcelleDialog.open()
+                            //verif.open()
+                        }
+                        else {
+                            messageDialog_toomuch.open()
+                        }
+                    }
+                }
     }
 
     Component {
@@ -554,5 +634,30 @@ Item {
             }
         }
     }
+
+    Dialog {
+            id: messageDialog_toomuch
+            title: "Warning"
+            standardButtons: Dialog.Ok
+            x: (parent.width - width) / 2
+            y: (parent.height - height) / 2
+            Label {
+                anchors.centerIn: parent
+                text: "Limite de parcelles enregistrées atteintes."
+            }
+        }
+
+        Dialog {
+            id: parcelleExistsDialog
+            standardButtons: Dialog.Ok
+            x: (parent.width - width) / 2
+            y: (parent.height - height) / 2
+            modal:true
+            title: "Error"
+            Label {
+                anchors.centerIn: parent
+                text: "La parcelle existe déja!"
+            }
+        }
 }
 

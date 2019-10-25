@@ -23,6 +23,7 @@
 #include <QDomDocument>
 #include <QJsonDocument>
 #include <QFileInfo>
+#include "DataManager/DbManager.h"
 
 QGC_LOGGING_CATEGORY(PlanMasterControllerLog, "PlanMasterControllerLog")
 
@@ -31,6 +32,10 @@ const char* PlanMasterController::kPlanFileType =               "Plan";
 const char* PlanMasterController::kJsonMissionObjectKey =       "mission";
 const char* PlanMasterController::kJsonGeoFenceObjectKey =      "geoFence";
 const char* PlanMasterController::kJsonRallyPointsObjectKey =   "rallyPoints";
+
+extern QString username;
+extern DbManager *db;
+extern QSqlTableModel *SqlMissionModel;
 
 PlanMasterController::PlanMasterController(QObject* parent)
     : QObject                   (parent)
@@ -369,6 +374,8 @@ void PlanMasterController::loadFromFile(const QString& filename)
         _currentPlanFile.clear();
     }
     emit currentPlanFileChanged();
+
+    db->addMission(username, filename);
 
     if (!offline()) {
         setDirty(true);

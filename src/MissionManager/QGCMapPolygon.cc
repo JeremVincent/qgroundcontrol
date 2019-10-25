@@ -20,6 +20,12 @@
 #include <QLineF>
 #include <QFile>
 #include <QDomDocument>
+#include <QList>
+#include "DataManager/DbManager.h"
+
+
+extern DbManager *db;
+extern QString username;
 
 const char* QGCMapPolygon::jsonPolygonKey = "polygon";
 
@@ -512,4 +518,21 @@ void QGCMapPolygon::verifyClockwiseWinding(void)
         clear();
         appendVertices(rgReversed);
     }
+}
+
+void QGCMapPolygon::saveAsParcelle(QString name, QString type, int speed) {
+    qDebug() << "----------";
+    qDebug() << name;
+    if (!name.endsWith(".kml")) name.append(".kml");
+    ShapeFileHelper::savePolygonToKML(name, &_polygonModel, 0);
+    db->addParcelle(username, name, type, speed);
+}
+QString QGCMapPolygon::verifArea() {
+    return QString("The area is ") + QString::number(this->area() / 10000) + " hectares";
+}
+
+
+bool QGCMapPolygon::checkIfExist(QString name) {
+    if(! name.endsWith(".kml")) name.append(".kml");
+    return db->checkIfExist(name);
 }
